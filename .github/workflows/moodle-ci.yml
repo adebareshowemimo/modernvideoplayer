@@ -62,7 +62,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, pgsql, mysqli, zip, gd, xmlrpc, soap, intl
+          extensions: mbstring, pgsql, mysqli, zip, gd, soap, intl, sodium, exif
           ini-values: max_input_vars=5000
           coverage: none
 
@@ -80,48 +80,58 @@ jobs:
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
       - name: Install Moodle
-        run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
+        run: moodle-plugin-ci install --plugin $GITHUB_WORKSPACE/plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
 
+      - name: Debug env after install
+        if: ${{ !cancelled() }}
+        run: |
+          echo "--- ci/.env ---"
+          cat ci/.env || echo "(no .env)"
+          echo "--- plugin dir ---"
+          ls -la $GITHUB_WORKSPACE/plugin | head -20
+          echo "--- version.php head ---"
+          head -5 $GITHUB_WORKSPACE/plugin/version.php || echo "(missing)"
+
       - name: PHP Lint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phplint ./plugin
+        run: moodle-plugin-ci phplint $GITHUB_WORKSPACE/plugin
 
       - name: PHP Mess Detector
         continue-on-error: true
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpmd ./plugin
+        run: moodle-plugin-ci phpmd $GITHUB_WORKSPACE/plugin
 
       - name: Moodle Code Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci codechecker --max-warnings 0 ./plugin
+        run: moodle-plugin-ci codechecker --max-warnings 0 $GITHUB_WORKSPACE/plugin
 
       - name: Moodle PHPDoc Checker
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpdoc ./plugin
+        run: moodle-plugin-ci phpdoc $GITHUB_WORKSPACE/plugin
 
       - name: Validating
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci validate ./plugin
+        run: moodle-plugin-ci validate $GITHUB_WORKSPACE/plugin
 
       - name: Check upgrade savepoints
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci savepoints ./plugin
+        run: moodle-plugin-ci savepoints $GITHUB_WORKSPACE/plugin
 
       - name: Mustache Lint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci mustache ./plugin
+        run: moodle-plugin-ci mustache $GITHUB_WORKSPACE/plugin
 
       - name: Grunt
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci grunt --max-lint-warnings 0 ./plugin
+        run: moodle-plugin-ci grunt --max-lint-warnings 0 $GITHUB_WORKSPACE/plugin
 
       - name: PHPUnit tests
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpunit --fail-on-warning ./plugin
+        run: moodle-plugin-ci phpunit --fail-on-warning $GITHUB_WORKSPACE/plugin
 
       - name: Behat features
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci behat --profile chrome ./plugin
+        run: moodle-plugin-ci behat --profile chrome $GITHUB_WORKSPACE/plugin
