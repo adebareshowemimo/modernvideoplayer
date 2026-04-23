@@ -153,5 +153,10 @@ function xmldb_modernvideoplayer_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2026042011, 'modernvideoplayer');
     }
 
+    if ($oldversion < 2026042012) {
+        // No schema changes; view.php hotfix for js_call_amd payload size.
+        upgrade_mod_savepoint(true, 2026042012, 'modernvideoplayer');
+    }
+
     return true;
 }

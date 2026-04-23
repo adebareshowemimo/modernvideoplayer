@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gradebook integration
 - Behat acceptance tests
 
+## [0.5.1] - 2026-04-23
+
+### Fixed
+- `view.php` now emits the player config as a `<script type="application/json">`
+  blob read by the AMD module instead of passing it through
+  `js_call_amd()`, which triggered a `Too much data passed as arguments`
+  E_USER_NOTICE in Moodle 5.0 when the strings bundle exceeded 1024 chars.
+
 ## [0.5.0] - 2026-04-23
 
 ### Added

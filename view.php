@@ -158,12 +158,24 @@ $jsconfig = [
     ],
 ];
 
-$PAGE->requires->js_call_amd('mod_modernvideoplayer/player', 'init', [$jsconfig]);
+$PAGE->requires->js_call_amd('mod_modernvideoplayer/player', 'init', [(int) $cm->id]);
 
 echo $OUTPUT->header();
 if (!$videofile) {
     echo $OUTPUT->notification(get_string('novideo', 'modernvideoplayer'));
 } else {
     echo $renderer->render_player($playercontext);
+    // Emit the player config (strings + flags) as a JSON blob for the AMD module
+    // to read. Passing it directly via js_call_amd exceeds the 1024-char arg limit.
+    $configjson = json_encode($jsconfig, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    echo html_writer::tag(
+        'script',
+        $configjson,
+        [
+            'type' => 'application/json',
+            'id' => 'mod_modernvideoplayer-config-' . (int) $cm->id,
+            'data-for' => 'mod_modernvideoplayer-config',
+        ]
+    );
 }
 echo $OUTPUT->footer();

@@ -25,9 +25,22 @@ const resetProgress = (cmid) => Ajax.call([{
     args: {cmid}
 }])[0];
 
-export const init = (config) => {
+export const init = (cmid) => {
     const root = document.querySelector('[data-region="modern-video-player"]');
     if (!root) {
+        return;
+    }
+
+    const configNode = document.getElementById('mod_modernvideoplayer-config-' + cmid);
+    if (!configNode) {
+        window.console.warn('mod_modernvideoplayer: missing config node for cmid ' + cmid);
+        return;
+    }
+    let config;
+    try {
+        config = JSON.parse(configNode.textContent);
+    } catch (e) {
+        window.console.error('mod_modernvideoplayer: failed to parse config JSON', e);
         return;
     }
 
