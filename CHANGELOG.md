@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+- Learner bookmarks
+- Picture-in-Picture + transcript download
+- Activity completion rules
+- Gradebook integration
+- Behat acceptance tests
+
+## [0.5.0] - 2026-04-23
+
 ### Added
 - **Captions (WebVTT)**: upload multiple `.vtt` files per activity. Language
   is auto-detected from filename suffix (e.g. `lecture.en.vtt`, `lecture.fr.vtt`,
@@ -34,9 +43,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `<` / `>` (speed down/up), `?` (show shortcuts help modal). Seek shortcuts
   still respect the server-side `allowedposition`.
 - New shortcuts help modal listing all bindings.
-
-### Planned
-- Learner bookmarks
+- **Privacy provider**: GDPR-compliant `\mod_modernvideoplayer\privacy\provider`
+  advertises all learner data (progress + watched segments), exports, and
+  deletes per-user/per-context/per-userlist. Backed by PHPUnit coverage.
+- **PHPUnit data generator**: `mod_modernvideoplayer_generator::create_instance()`
+  with sensible defaults so other tests can spin up activity instances.
 
 ## [0.1.0] - 2026-04-22
 
