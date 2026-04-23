@@ -30,38 +30,91 @@ fast-forwarding, and tab-hiding all look like "watched".
 - **Real completion.** Native Moodle completion rule "watched ≥ X%" and a
   matching availability condition for downstream activities.
 
-## Features
+## Features (Free / Community Edition)
 
-### Playback
-- Play / pause / mute / volume / fullscreen / Picture-in-Picture
-- Poster image, focus mode, configurable nav toggle
+Everything below is in the free GPL build — no license key, no upsell wall.
+
+### Playback & player UI
+- HTML5 `<video>` player with play / pause / mute / volume / fullscreen
+- Picture-in-Picture toggle (opt-in per activity, auto-disabled in Focus Mode)
+- Poster image, configurable primary/secondary navigation toggles,
+  title position, right-blocks toggle, course-index toggle
 - **Autoplay modes**: off / muted / unmuted (with muted fallback when the
   browser blocks sound)
-- External URL or uploaded MP4
+- External URL source **or** uploaded MP4 (file API + repository integration)
+- Learner-facing **playback-speed menu** with admin-configurable maximum
+- **Keyboard shortcuts**: space, arrows, `J`/`K`/`L`, `M`, `F`, digit-seek
+  (all gated by Focus Mode)
+- Resume from last known position
+- Theme-aware, RTL-ready, responsive, accessible controls (ARIA, focus rings)
+
+### Captions, transcript & chapters
+- VTT captions with default-language selector
+- **Transcript panel** with click-to-seek cues
+- **Transcript download** button (opt-in per activity) — exports a timestamped
+  `.txt` file named from the activity
+- Chapter / timeline markers
+
+### Focus Mode enforcement (v0.10.0)
+- Per-activity `enforcefocus` toggle + admin default
+- Disables Picture-in-Picture
+- Suppresses seek keyboard shortcuts (arrows, `J`/`L`, `<`/`>`, digit keys)
+- Auto-pauses playback when the browser tab is hidden
+- Picture-in-Picture and transcript download each have independent opt-in
+  toggles (`allowpip`, `allowtranscriptdownload`)
 
 ### Integrity (the differentiator)
-- Signed session tokens per user + activity
-- Server-side seek validation (configurable tolerance)
-- Server-side playback-speed enforcement (allow / deny list)
-- Suspicious-event counters + admin visibility
+- Signed per-session tokens per user + activity
+- Server-side **seek validation** with configurable tolerance
+- Server-side **playback-speed enforcement** (allow / deny)
+- Heartbeat grace seconds + strict end-of-video validation
+- Suspicious-event counters surfaced in the instructor report
 
 ### Progress & completion
-- Heartbeat + segment tracking → accurate viewed-percentage
-- Custom completion rule: "watched at least N %"
-- Availability condition: gate downstream activities on watch progress
-- Resume from last position
+- Heartbeat + **segment tracking** → accurate viewed-percentage (not native
+  `timeupdate` approximation)
+- Custom completion rule: **watched at least N %** (v0.7.0)
+- Availability condition to gate downstream activities on watch progress
+- Partial / full / forced completion modes
+
+### Gradebook integration (v0.8.0)
+- Activity grade item driven by watched-percentage
+- `grade_update()` hook, `grade_item_update`, scale/point support
+- Honours Moodle's grade category, pass mark, and grade locking
+
+### Learner bookmarks (v0.9.0)
+- Per-learner timestamped bookmarks with optional labels
+- AJAX external services: `mod_modernvideoplayer_add_bookmark`,
+  `list_bookmarks`, `delete_bookmark`
+- Bookmarks are purged automatically when the instance is deleted
 
 ### Reporting
-- Per-activity learner report with progress, flags, last-seen, total watched
+- Per-activity learner report (progress, flags, last-seen, total watched)
 - CSV export
-- Moodle events (`progress_updated`, `completion_achieved`,
-  `suspicious_seek_detected`) for your favourite LRS / data warehouse
+- Moodle events: `progress_updated`, `completion_achieved`,
+  `suspicious_seek_detected`, `bookmark_created`, `bookmark_deleted` — plug
+  straight into your LRS / data warehouse
+
+### Privacy & compliance (v0.5.0)
+- Full Moodle Privacy API provider
+- GDPR subject-access **export** and **delete** for all user-authored data
+  (sessions, progress, suspicious flags, bookmarks)
+- No external network calls, no tracking pixels
 
 ### Platform hygiene
-- Full backup & restore
-- Privacy provider (GDPR subject-access export + delete)
-- Moodle App support
-- Mustache templates, AMD modules, theme-aware
+- Full **backup & restore** (user data, instance config, bookmarks)
+- **Mobile / Moodle App** support
+- Mustache templates, AMD modules (Rollup-built, ESLint-clean)
+- Site-wide admin defaults for every instance-level setting
+- Internationalisation scaffold (English bundled; all strings externalised)
+
+### Quality bar
+- **42 PHPUnit tests / 115 assertions** covering defaults, completion rules,
+  gradebook writeback, bookmarks CRUD + ownership, privacy export/delete,
+  Focus Mode fields
+- **Behat acceptance scenarios** for activity creation + Focus Mode settings
+- GitHub Actions CI (`moodle-plugin-ci`) green on Moodle 4.5 and 5.0
+- Moodle coding style clean (`phpcs --standard=moodle`)
 
 ## Requirements
 
@@ -122,16 +175,22 @@ vendor/bin/phpunit --testsuite mod_modernvideoplayer_testsuite
 vendor/bin/behat --tags=@mod_modernvideoplayer
 ```
 
-## Roadmap (free edition)
+## Roadmap
 
-See [plan-freeVersion.prompt.md](https://github.com/adebareshowemimo/modernvideoplayer/blob/main/docs/roadmap.md)
-for the tracked roadmap. Highlights on the path to **1.0.0**:
+The free-edition roadmap through **v0.11.0** is complete (see
+[CHANGELOG.md](CHANGELOG.md) for the per-release breakdown):
 
-- Captions (VTT) + transcript panel with click-to-seek
-- Chapters / timeline markers
-- Keyboard shortcuts + learner-facing speed menu
-- Learner bookmarks
-- Behat + PHPUnit coverage green on Moodle 4.5 and 5.0
+- ✅ v0.5.0 — Privacy provider
+- ✅ v0.5.1 — `js_call_amd` hotfix
+- ✅ v0.6.0 — PHPUnit + CI
+- ✅ v0.7.0 — Activity completion rules
+- ✅ v0.8.0 — Gradebook integration
+- ✅ v0.9.0 — Learner bookmarks
+- ✅ v0.10.0 — Focus Mode + PiP + transcript download
+- ✅ v0.11.0 — Behat acceptance coverage
+
+Next on the path to **1.0.0**: per-user watch-progress export report and
+packaging for the Moodle Plugins Directory.
 
 ## Contributing
 

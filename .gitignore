@@ -29,3 +29,14 @@ composer.lock
 # Environment
 .env
 .env.local
+
+# Local working notes / planning docs (not for release).
+# Whitelisted docs (README, CHANGELOG, CONTRIBUTING, CODE_OF_CONDUCT,
+# SECURITY, LICENSE, UPGRADING) stay tracked. Everything else is scratch.
+plan-*.prompt.md
+plan-*.md
+NOTES.md
+TODO.md
+SCRATCH.md
+WORKING.md
+*.draft.md

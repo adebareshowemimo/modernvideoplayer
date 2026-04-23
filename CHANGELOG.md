@@ -10,6 +10,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 - Learner activity report (per-user watch progress export)
 
+## [1.1.0] - 2026-04-23
+
+### Changed
+- **First stable release.** Promoted plugin maturity from `MATURITY_ALPHA` to
+  `MATURITY_STABLE`. All features shipped in the 0.5.x–0.11.x line are now
+  considered production-ready.
+- Version bumped to `2026042300` / release `1.1.0`.
+
+### Documentation
+- `README.md`: replaced the thin Features block with a comprehensive
+  **Features (Free / Community Edition)** section enumerating every capability
+  shipped through v0.11.0 (playback & UI, captions/transcript/chapters, Focus
+  Mode enforcement, integrity, progress & completion, gradebook, bookmarks,
+  reporting, privacy, platform hygiene, quality bar).
+- `README.md`: rewrote the Roadmap section to reflect that v0.5.0–v0.11.0 are
+  complete.
+- `.gitignore`: added patterns for scratch / working markdown notes
+  (`plan-*.md`, `NOTES.md`, `TODO.md`, `SCRATCH.md`, `WORKING.md`, `*.draft.md`)
+  while keeping published docs (README, CHANGELOG, CONTRIBUTING, CODE_OF_CONDUCT,
+  SECURITY, UPGRADING, LICENSE) tracked.
+
 ## [0.11.0] - 2026-04-23
 
 ### Added
