@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gradebook integration
 - Behat acceptance tests
 
+## [0.6.0] - 2026-04-23
+
+### Added
+- **External web service PHPUnit coverage**: `tests/external/external_test.php`
+  covers all four WS endpoints (`get_progress`, `heartbeat`, `mark_complete`,
+  `reset_progress`) end-to-end, including return-structure validation via
+  `external_api::clean_returnvalue()` and course-access enforcement.
+- Plugin now ships with **14 PHPUnit tests / 50 assertions** spanning
+  privacy provider and external web services. The existing
+  `.github/workflows/moodle-ci.yml` runs these on every push/PR via
+  `moodle-plugin-ci phpunit --fail-on-warning`.
+
 ## [0.5.1] - 2026-04-23
 
 ### Fixed

@@ -158,5 +158,10 @@ function xmldb_modernvideoplayer_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2026042012, 'modernvideoplayer');
     }
 
+    if ($oldversion < 2026042013) {
+        // No schema changes; PHPUnit coverage for external web services.
+        upgrade_mod_savepoint(true, 2026042013, 'modernvideoplayer');
+    }
+
     return true;
 }
