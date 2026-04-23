@@ -165,6 +165,7 @@ export const init = (config) => {
 
         const startPlayback = (time = 0) => {
             UI.hideResumeOverlay(root);
+            // eslint-disable-next-line promise/no-nesting -- legitimate fallback chain.
             return applySeek(time).then(() => video.play()).catch(() => video.play());
         };
 
@@ -181,11 +182,13 @@ export const init = (config) => {
             }
             const playPromise = startPlayback(0);
             if (mode === 'unmuted' && playPromise && typeof playPromise.catch === 'function') {
+                // eslint-disable-next-line promise/no-nesting -- fallback retry on autoplay-block.
                 playPromise.catch(() => {
                     // Browser blocked unmuted autoplay — retry muted.
                     video.muted = true;
                     syncPlayerUi();
-                    void video.play().catch(() => {});
+                    // eslint-disable-next-line promise/no-nesting
+                    void video.play().catch(() => undefined);
                 });
             }
         };
@@ -230,6 +233,7 @@ export const init = (config) => {
         resumeButton?.addEventListener('click', () => startPlayback(resumeposition));
         root.querySelectorAll('[data-action="restart-playback"]').forEach((btn) => {
             btn.addEventListener('click', () => {
+                /* eslint-disable promise/no-nesting -- chain restart logic. */
                 resetProgress(config.cmid).then((fresh) => {
                     // Wipe all local state counters so enforcer/progress bar reset.
                     state.sessiontoken = fresh.sessiontoken;
@@ -241,11 +245,12 @@ export const init = (config) => {
                     // NOTE: no Enforcer.init here — the existing listeners already hold a
                     // reference to the same `state` object and will enforce the new limits.
                     UI.updatePercent(root, 0);
-                    startPlayback(0);
+                    return startPlayback(0);
                 }).catch(() => {
                     // Fall back to local seek-only restart if the API call fails.
-                    startPlayback(0);
+                    return startPlayback(0);
                 });
+                /* eslint-enable promise/no-nesting */
             });
         });
         playButton?.addEventListener('click', () => {
@@ -375,6 +380,8 @@ export const init = (config) => {
         setControlsVisible(video.paused);
         UI.updatePercent(root, getVisualPercent(state));
         syncPlayerUi();
+        // eslint-disable-next-line consistent-return -- explicit return for promise/always-return.
+        return null;
     }).catch(() => {
         window.console.warn(config.strings.progressunavailable);
     });

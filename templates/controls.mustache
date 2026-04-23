@@ -1,5 +1,17 @@
 {{!
     @template mod_modernvideoplayer/controls
+
+    Playback controls overlay for the modern video player.
+
+    Context variables required for this template:
+    * showcontroltext - whether to show button labels alongside icons (bool)
+    * hascaptions - whether caption tracks are available (bool)
+
+    Example context (json):
+    {
+        "showcontroltext": true,
+        "hascaptions": false
+    }
 }}
 <div class="modernvideoplayer-controls position-absolute start-0 end-0 bottom-0 p-3 p-md-4 {{^showcontroltext}}modernvideoplayer-controls--icononly{{/showcontroltext}}" data-region="controls-shell">
     <div class="modernvideoplayer-controls__surface">
