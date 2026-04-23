@@ -14,17 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Progress repository for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\local;
 
 use stdClass;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Persistence layer for learner progress.
+ * @package mod_modernvideoplayer
  */
 class progress_repository {
-
     /**
      * Get or create progress row.
      *

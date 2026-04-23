@@ -36,6 +36,7 @@
 
 .modernvideoplayer__title {
     margin: 0;
+    /* stylelint-disable-next-line csstree/validator */
     font-size: clamp(1rem, 0.7rem + 1vw, 1.4rem);
     font-weight: 700;
     color: #0f172a;
@@ -69,6 +70,7 @@
     background: #07111c;
     border-radius: 1.25rem;
     overflow: hidden;
+    /* stylelint-disable-next-line csstree/validator */
     min-height: min(70vh, 42rem);
 }
 
@@ -96,6 +98,7 @@
 
 .modernvideoplayer-status__headline {
     color: #eaf1ff;
+    /* stylelint-disable-next-line csstree/validator */
     font-size: clamp(0.95rem, 0.82rem + 0.4vw, 1.1rem);
     font-weight: 600;
     line-height: 1;
@@ -226,9 +229,16 @@
 
 .modernvideoplayer-controls--icononly .modernvideoplayer-controls__button {
     min-width: 2.25rem;
+    /* stylelint-disable declaration-no-important -- override Bootstrap utility classes. */
     padding-left: 0.7rem !important;
     padding-right: 0.7rem !important;
+    /* stylelint-enable declaration-no-important */
 }
+
+/* The focus-mode rules below intentionally use !important to override Boost theme defaults
+   on a per-instance basis without modifying core CSS. The long selectors target deeply-nested
+   Boost markup. Stylelint disabled for this targeted block only. */
+/* stylelint-disable declaration-no-important, max-line-length */
 
 /* Neutralise the extra left offset Boost adds to #page when drawers are present. */
 .modernvideoplayer-focus-mode #page.drawers {
@@ -289,8 +299,7 @@
 .modernvideoplayer-focus-mode.modernvideoplayer-hide-primarynav.modernvideoplayer-hide-secondarynav #page-wrapper #page {
     padding-top: 0 !important;
 }
-
-
+/* stylelint-enable declaration-no-important, max-line-length */
 
 .modernvideoplayer-focus-mode #region-main {
     padding-top: 1rem;

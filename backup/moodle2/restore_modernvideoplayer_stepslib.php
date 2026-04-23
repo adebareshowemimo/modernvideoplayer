@@ -14,13 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Restore steps for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 /**
  * Restore step definitions for mod_modernvideoplayer.
+ * @package mod_modernvideoplayer
  */
 class restore_modernvideoplayer_activity_structure_step extends restore_activity_structure_step {
-
     /**
      * Define the structure to restore.
      *
@@ -31,8 +37,14 @@ class restore_modernvideoplayer_activity_structure_step extends restore_activity
         $paths = [];
         $paths[] = new restore_path_element('modernvideoplayer', '/activity/modernvideoplayer');
         if ($userinfo) {
-            $paths[] = new restore_path_element('modernvideoplayer_progress', '/activity/modernvideoplayer/progresses/progress');
-            $paths[] = new restore_path_element('modernvideoplayer_segment', '/activity/modernvideoplayer/progresses/progress/segments/segment');
+            $paths[] = new restore_path_element(
+                'modernvideoplayer_progress',
+                '/activity/modernvideoplayer/progresses/progress'
+            );
+            $paths[] = new restore_path_element(
+                'modernvideoplayer_segment',
+                '/activity/modernvideoplayer/progresses/progress/segments/segment'
+            );
         }
 
         return $this->prepare_activity_structure($paths);

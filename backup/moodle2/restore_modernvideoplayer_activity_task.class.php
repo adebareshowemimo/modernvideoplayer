@@ -14,15 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Restore task for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/modernvideoplayer/backup/moodle2/restore_modernvideoplayer_stepslib.php');
 
 /**
  * Restore task for mod_modernvideoplayer.
+ * @package mod_modernvideoplayer
  */
 class restore_modernvideoplayer_activity_task extends restore_activity_task {
-
     /**
      * Define custom settings.
      *

@@ -14,13 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Backup steps for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 /**
  * Backup step definitions for mod_modernvideoplayer.
+ * @package mod_modernvideoplayer
  */
 class backup_modernvideoplayer_activity_structure_step extends backup_activity_structure_step {
-
     /**
      * Define the backup structure.
      *

@@ -14,26 +14,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Playback progress updated event.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\event;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Progress updated event.
  */
 class progress_updated extends \core\event\base {
+    /**
+     * Initialise the event.
+     */
     protected function init() {
         $this->data['objecttable'] = 'modernvideoplayer';
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
+    /**
+     * Localised event name.
+     *
+     * @return string
+     */
     public static function get_name() {
         return get_string('eventprogressupdated', 'modernvideoplayer');
     }
 
+    /**
+     * Plain-text event description.
+     *
+     * @return string
+     */
     public function get_description() {
-        return "The user with id '{$this->relateduserid}' had validated progress saved for modern video player ".
+        return "The user with id '{$this->relateduserid}' had validated progress saved for modern video player " .
             "activity '{$this->objectid}'.";
     }
 }

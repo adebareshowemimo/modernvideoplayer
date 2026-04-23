@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Return the module instance using either cm id or instance id.
  *
@@ -36,7 +34,13 @@ function modernvideoplayer_get_course_module_and_instance(int $id = 0, int $n = 
 
     if ($n) {
         $modernvideoplayer = $DB->get_record('modernvideoplayer', ['id' => $n], '*', MUST_EXIST);
-        $cm = get_coursemodule_from_instance('modernvideoplayer', $modernvideoplayer->id, $modernvideoplayer->course, false, MUST_EXIST);
+        $cm = get_coursemodule_from_instance(
+            'modernvideoplayer',
+            $modernvideoplayer->id,
+            $modernvideoplayer->course,
+            false,
+            MUST_EXIST
+        );
     } else {
         $cm = get_coursemodule_from_id('modernvideoplayer', $id, 0, false, MUST_EXIST);
         $modernvideoplayer = $DB->get_record('modernvideoplayer', ['id' => $cm->instance], '*', MUST_EXIST);

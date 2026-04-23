@@ -31,7 +31,6 @@ require_once(__DIR__ . '/locallib.php');
  * Module settings form.
  */
 class mod_modernvideoplayer_mod_form extends moodleform_mod {
-
     /**
      * Define form fields.
      *

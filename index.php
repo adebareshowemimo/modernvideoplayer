@@ -48,8 +48,9 @@ if (!$instances) {
 $table = new html_table();
 $table->head = [get_string('name'), get_string('lastmodified')];
 foreach ($instances as $instance) {
+    $url = new moodle_url('/mod/modernvideoplayer/view.php', ['id' => $instance->coursemodule]);
     $table->data[] = [
-        html_writer::link(new moodle_url('/mod/modernvideoplayer/view.php', ['id' => $instance->coursemodule]), format_string($instance->name)),
+        html_writer::link($url, format_string($instance->name)),
         userdate($instance->timemodified),
     ];
 }

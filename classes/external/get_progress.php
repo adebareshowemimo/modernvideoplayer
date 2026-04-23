@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Web service: get playback progress.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\external;
 
 use context_module;
@@ -22,16 +30,15 @@ use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
 use mod_modernvideoplayer\local\playback_manager;
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/modernvideoplayer/locallib.php');
 
 /**
  * Return learner progress and activity configuration.
+ * @package mod_modernvideoplayer
  */
 class get_progress extends external_api {
-
     /**
      * Parameters.
      *

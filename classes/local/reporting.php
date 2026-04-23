@@ -14,17 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Reporting helpers for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\local;
 
 use stdClass;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Reporting query helper.
+ * @package mod_modernvideoplayer
  */
 class reporting {
-
     /**
      * Return report rows and summaries.
      *
@@ -34,8 +39,12 @@ class reporting {
      * @param string $search free text search
      * @return array
      */
-    public function get_report_data(stdClass $instance, string $completionfilter = 'all', bool $suspiciousonly = false,
-            string $search = ''): array {
+    public function get_report_data(
+        stdClass $instance,
+        string $completionfilter = 'all',
+        bool $suspiciousonly = false,
+        string $search = ''
+    ): array {
         global $DB;
 
         $conditions = ['p.modernvideoplayerid = :instanceid'];
@@ -63,7 +72,11 @@ class reporting {
         }
 
         $where = implode(' AND ', $conditions);
-        $userfields = \core_user\fields::for_name()->with_userpic(false)->including('email')->get_sql('u', false, '', '', false)->selects;
+        $userfields = \core_user\fields::for_name()
+            ->with_userpic(false)
+            ->including('email')
+            ->get_sql('u', false, '', '', false)
+            ->selects;
         $sql = "SELECT p.*, {$userfields}
                   FROM {modernvideoplayer_progress} p
                   JOIN {user} u ON u.id = p.userid

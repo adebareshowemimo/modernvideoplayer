@@ -126,7 +126,7 @@ function modernvideoplayer_delete_instance($id): bool {
 
     $progressids = $DB->get_fieldset_select('modernvideoplayer_progress', 'id', 'modernvideoplayerid = ?', [$id]);
     if ($progressids) {
-        list($insql, $params) = $DB->get_in_or_equal($progressids, SQL_PARAMS_QM);
+        [$insql, $params] = $DB->get_in_or_equal($progressids, SQL_PARAMS_QM);
         $DB->delete_records_select('modernvideoplayer_segments', "progressid $insql", $params);
     }
     $DB->delete_records('modernvideoplayer_progress', ['modernvideoplayerid' => $id]);
@@ -223,8 +223,11 @@ function modernvideoplayer_get_post_actions(): array {
 function modernvideoplayer_get_coursemodule_info($coursemodule): ?cached_cm_info {
     global $DB;
 
-    $instance = $DB->get_record('modernvideoplayer', ['id' => $coursemodule->instance],
-        'id, name, intro, introformat, requiredpercent, strictendvalidation');
+    $instance = $DB->get_record(
+        'modernvideoplayer',
+        ['id' => $coursemodule->instance],
+        'id, name, intro, introformat, requiredpercent, strictendvalidation'
+    );
     if (!$instance) {
         return null;
     }
