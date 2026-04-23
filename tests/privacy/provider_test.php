@@ -78,6 +78,95 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         }
         $this->assertContains('modernvideoplayer_progress', $tablenames);
         $this->assertContains('modernvideoplayer_segments', $tablenames);
+        $this->assertContains('modernvideoplayer_bookmarks', $tablenames);
+    }
+
+    /**
+     * get_contexts_for_userid() returns the activity context for a learner with bookmarks only.
+     */
+    public function test_get_contexts_for_userid_bookmarks_only(): void {
+        $user = $this->create_bookmark_for_new_user();
+
+        $contextlist = provider::get_contexts_for_userid($user->id);
+        $this->assertCount(1, $contextlist);
+        $this->assertEquals($this->context->id, $contextlist->get_contextids()[0]);
+    }
+
+    /**
+     * get_users_in_context() returns a user with bookmarks even when they have no progress row.
+     */
+    public function test_get_users_in_context_bookmarks_only(): void {
+        $user = $this->create_bookmark_for_new_user();
+
+        $userlist = new userlist($this->context, 'mod_modernvideoplayer');
+        provider::get_users_in_context($userlist);
+
+        $this->assertEquals([$user->id], $userlist->get_userids());
+    }
+
+    /**
+     * export_user_data() writes bookmark data for the user.
+     */
+    public function test_export_user_data_includes_bookmarks(): void {
+        [$user, $context] = $this->create_progress_for_new_user();
+        $this->create_bookmark_for_user($user);
+
+        $approvedlist = new approved_contextlist($user, 'mod_modernvideoplayer', [$context->id]);
+        provider::export_user_data($approvedlist);
+
+        $writer = writer::with_context($context);
+        $bookmarks = $writer->get_data(['bookmarks']);
+        $this->assertNotEmpty($bookmarks);
+        $this->assertObjectHasProperty('bookmarks', $bookmarks);
+        $this->assertCount(1, $bookmarks->bookmarks);
+        $this->assertEquals('Intro', $bookmarks->bookmarks[0]->label);
+    }
+
+    /**
+     * delete_data_for_all_users_in_context() also clears bookmarks.
+     */
+    public function test_delete_data_for_all_users_in_context_bookmarks(): void {
+        global $DB;
+
+        $this->create_bookmark_for_new_user();
+        $this->create_bookmark_for_new_user();
+        $this->assertEquals(2, $DB->count_records('modernvideoplayer_bookmarks'));
+
+        provider::delete_data_for_all_users_in_context($this->context);
+
+        $this->assertEquals(0, $DB->count_records('modernvideoplayer_bookmarks'));
+    }
+
+    /**
+     * delete_data_for_user() removes only the target learner's bookmarks.
+     */
+    public function test_delete_data_for_user_bookmarks(): void {
+        global $DB;
+
+        $user1 = $this->create_bookmark_for_new_user();
+        $user2 = $this->create_bookmark_for_new_user();
+
+        $approvedlist = new approved_contextlist($user1, 'mod_modernvideoplayer', [$this->context->id]);
+        provider::delete_data_for_user($approvedlist);
+
+        $this->assertEquals(0, $DB->count_records('modernvideoplayer_bookmarks', ['userid' => $user1->id]));
+        $this->assertEquals(1, $DB->count_records('modernvideoplayer_bookmarks', ['userid' => $user2->id]));
+    }
+
+    /**
+     * delete_data_for_users() removes only the supplied learners' bookmarks.
+     */
+    public function test_delete_data_for_users_bookmarks(): void {
+        global $DB;
+
+        $user1 = $this->create_bookmark_for_new_user();
+        $user2 = $this->create_bookmark_for_new_user();
+
+        $approvedlist = new approved_userlist($this->context, 'mod_modernvideoplayer', [$user1->id]);
+        provider::delete_data_for_users($approvedlist);
+
+        $this->assertEquals(0, $DB->count_records('modernvideoplayer_bookmarks', ['userid' => $user1->id]));
+        $this->assertEquals(1, $DB->count_records('modernvideoplayer_bookmarks', ['userid' => $user2->id]));
     }
 
     /**
@@ -216,5 +305,37 @@ final class provider_test extends \core_privacy\tests\provider_testcase {
         ]);
 
         return [$user, $this->context];
+    }
+
+    /**
+     * Helper: create a new enrolled user with a bookmark only (no progress row).
+     *
+     * @return \stdClass the created user
+     */
+    protected function create_bookmark_for_new_user(): \stdClass {
+        $user = $this->getDataGenerator()->create_user();
+        $this->getDataGenerator()->enrol_user($user->id, $this->course->id, 'student');
+        $this->create_bookmark_for_user($user);
+        return $user;
+    }
+
+    /**
+     * Helper: insert a bookmark for an existing user in the current activity.
+     *
+     * @param \stdClass $user
+     * @return int inserted bookmark id
+     */
+    protected function create_bookmark_for_user(\stdClass $user): int {
+        global $DB;
+
+        $now = time();
+        return $DB->insert_record('modernvideoplayer_bookmarks', (object) [
+            'modernvideoplayerid' => $this->cm->instance,
+            'userid' => $user->id,
+            'position' => 12.5,
+            'label' => 'Intro',
+            'timecreated' => $now,
+            'timemodified' => $now,
+        ]);
     }
 }
