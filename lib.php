@@ -143,6 +143,7 @@ function modernvideoplayer_delete_instance($id): bool {
         $DB->delete_records_select('modernvideoplayer_segments', "progressid $insql", $params);
     }
     $DB->delete_records('modernvideoplayer_progress', ['modernvideoplayerid' => $id]);
+    (new \mod_modernvideoplayer\local\bookmark_manager())->delete_for_activity($id);
     modernvideoplayer_grade_item_delete($instance);
     $DB->delete_records('modernvideoplayer', ['id' => $id]);
 

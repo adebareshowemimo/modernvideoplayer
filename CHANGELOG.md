@@ -8,9 +8,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Learner bookmarks
 - Picture-in-Picture + transcript download
 - Behat acceptance tests
+
+## [0.9.0] - 2026-04-23
+
+### Added
+- **Learner bookmarks**:
+  - New `modernvideoplayer_bookmarks` table (id, modernvideoplayerid, userid,
+    position, label, timecreated, timemodified) provisioned via
+    `db/upgrade.php` savepoint 2026042016, with FKs to `modernvideoplayer` and
+    `user` plus an index on `(modernvideoplayerid, userid)`.
+  - Domain service `mod_modernvideoplayer\local\bookmark_manager` enforcing
+    trimmed non-empty labels, a 50 bookmarks-per-user cap, position clamping
+    to `>= 0`, and scoped `delete_own()` / `delete_for_activity()` cleanup.
+  - Three AJAX-enabled web services:
+    `mod_modernvideoplayer_add_bookmark` (write, requires
+    `mod/modernvideoplayer:submitprogress`),
+    `mod_modernvideoplayer_list_bookmarks` (read, requires
+    `mod/modernvideoplayer:view`) and
+    `mod_modernvideoplayer_delete_bookmark` (write, same submitprogress
+    capability, ownership-scoped).
+  - Activity deletion (`modernvideoplayer_delete_instance`) now cascades
+    through the manager so orphaned bookmarks are removed.
+  - PHPUnit coverage in `tests/bookmarks_test.php` (10 tests / 22 assertions)
+    across manager edge cases, WS happy paths and ownership enforcement.
+
+### Changed
+- Total plugin test suite now reports **39 tests / 100 assertions**, phpcs
+  clean.
 
 ## [0.8.0] - 2026-04-23
 

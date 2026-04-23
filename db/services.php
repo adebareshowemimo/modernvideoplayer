@@ -53,4 +53,25 @@ $functions = [
         'ajax' => true,
         'capabilities' => 'mod/modernvideoplayer:submitprogress',
     ],
+    'mod_modernvideoplayer_add_bookmark' => [
+        'classname' => 'mod_modernvideoplayer\external\add_bookmark',
+        'description' => 'Add a learner bookmark at a specific video position.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'mod/modernvideoplayer:submitprogress',
+    ],
+    'mod_modernvideoplayer_list_bookmarks' => [
+        'classname' => 'mod_modernvideoplayer\external\list_bookmarks',
+        'description' => 'List the current user bookmarks for an activity.',
+        'type' => 'read',
+        'ajax' => true,
+        'capabilities' => 'mod/modernvideoplayer:view',
+    ],
+    'mod_modernvideoplayer_delete_bookmark' => [
+        'classname' => 'mod_modernvideoplayer\external\delete_bookmark',
+        'description' => 'Delete one of the current user own bookmarks.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'mod/modernvideoplayer:submitprogress',
+    ],
 ];

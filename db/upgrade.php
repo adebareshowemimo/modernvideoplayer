@@ -180,5 +180,29 @@ function xmldb_modernvideoplayer_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2026042015, 'modernvideoplayer');
     }
 
+    if ($oldversion < 2026042016) {
+        // Learner bookmarks: new table for per-user timestamp bookmarks.
+        $table = new xmldb_table('modernvideoplayer_bookmarks');
+
+        if (!$dbman->table_exists($table)) {
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+            $table->add_field('modernvideoplayerid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('position', XMLDB_TYPE_NUMBER, '10,2', null, XMLDB_NOTNULL, null, '0.00');
+            $table->add_field('label', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, '');
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('modernvideoplayerfk', XMLDB_KEY_FOREIGN, ['modernvideoplayerid'], 'modernvideoplayer', ['id']);
+            $table->add_key('userfk', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+            $table->add_index('modernvideoplayeruserid', XMLDB_INDEX_NOTUNIQUE, ['modernvideoplayerid', 'userid']);
+
+            $dbman->create_table($table);
+        }
+
+        upgrade_mod_savepoint(true, 2026042016, 'modernvideoplayer');
+    }
+
     return true;
 }

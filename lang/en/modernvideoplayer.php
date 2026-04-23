@@ -38,6 +38,8 @@ If the learner has a saved resume position, the resume prompt is shown instead a
 $string['autoplaymuted'] = 'Muted';
 $string['autoplayoff'] = 'Off';
 $string['autoplayunmuted'] = 'Unmuted (muted fallback if blocked)';
+$string['bookmarklabelrequired'] = 'Bookmarks must have a non-empty label.';
+$string['bookmarklimitreached'] = 'You have reached the maximum number of bookmarks for this video.';
 $string['bufferedlabel'] = 'Buffered';
 $string['captions'] = 'Caption tracks (WebVTT)';
 $string['captions_help'] = 'Upload one or more WebVTT (.vtt) caption files. Learners can turn captions on or off with the **CC** button in the player controls.
