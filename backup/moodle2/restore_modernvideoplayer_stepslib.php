@@ -45,6 +45,10 @@ class restore_modernvideoplayer_activity_structure_step extends restore_activity
                 'modernvideoplayer_segment',
                 '/activity/modernvideoplayer/progresses/progress/segments/segment'
             );
+            $paths[] = new restore_path_element(
+                'modernvideoplayer_bookmark',
+                '/activity/modernvideoplayer/bookmarks/bookmark'
+            );
         }
 
         return $this->prepare_activity_structure($paths);
@@ -95,6 +99,21 @@ class restore_modernvideoplayer_activity_structure_step extends restore_activity
         $data = (object) $data;
         $data->progressid = $this->get_new_parentid('modernvideoplayer_progress');
         $DB->insert_record('modernvideoplayer_segments', $data);
+    }
+
+    /**
+     * Restore a learner bookmark.
+     *
+     * @param array $data bookmark data
+     * @return void
+     */
+    protected function process_modernvideoplayer_bookmark($data) {
+        global $DB;
+
+        $data = (object) $data;
+        $data->modernvideoplayerid = $this->get_new_parentid('modernvideoplayer');
+        $data->userid = $this->get_mappingid('user', $data->userid);
+        $DB->insert_record('modernvideoplayer_bookmarks', $data);
     }
 
     /**

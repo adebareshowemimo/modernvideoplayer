@@ -1,0 +1,71 @@
+This file describes API and database changes in the mod_modernvideoplayer
+plugin. Information provided here is intended especially for developers and
+site admins tracking the plugin's git history between releases.
+
+=== 1.2.0 ===
+
+* Privacy API: `\mod_modernvideoplayer\privacy\provider` now declares the
+  `modernvideoplayer_bookmarks` table in `get_metadata()`, unions it into
+  `get_contexts_for_userid()` and `get_users_in_context()`, exports bookmarks
+  per context in `export_user_data()`, and deletes bookmarks in all four
+  delete paths.
+* Backup/restore: `backup_modernvideoplayer_activity_structure_step` now
+  backs up learner bookmarks under `<bookmarks><bookmark/></bookmarks>`
+  (gated by the `userinfo` backup setting). The matching restore step
+  `process_modernvideoplayer_bookmark()` has been added.
+* `version.php` now declares `$plugin->supported = [405, 500]`.
+
+=== 1.1.0 ===
+
+* First stable release. Promoted maturity from `MATURITY_ALPHA` to
+  `MATURITY_STABLE`. No API or schema changes relative to 0.11.0.
+
+=== 0.11.0 ===
+
+* Added Behat acceptance scenarios for activity creation and Focus Mode
+  settings round-trip.
+
+=== 0.10.0 ===
+
+* Added Focus Mode enforcement. New DB columns via `db/upgrade.php`
+  savepoint `2026042017`:
+  - `modernvideoplayer.enforcefocus` (int 4, default 0)
+  - `modernvideoplayer.allowpip` (int 4, default 1)
+  - `modernvideoplayer.allowtranscriptdownload` (int 4, default 1)
+
+=== 0.9.0 ===
+
+* Added learner bookmarks. New table `modernvideoplayer_bookmarks`:
+  `(id, modernvideoplayerid, userid, position, label, timecreated, timemodified)`.
+* New external services:
+  - `mod_modernvideoplayer_add_bookmark`
+  - `mod_modernvideoplayer_list_bookmarks`
+  - `mod_modernvideoplayer_delete_bookmark`
+
+=== 0.8.0 ===
+
+* Gradebook integration. Added `modernvideoplayer.grade` column. Plugin now
+  implements `mod_modernvideoplayer_grade_item_update()` and
+  `mod_modernvideoplayer_grade_item_delete()`.
+
+=== 0.7.0 ===
+
+* Activity completion rules: `completionmode`, `requiredpercent` fields.
+  Custom completion class `\mod_modernvideoplayer\completion\custom_completion`.
+
+=== 0.6.0 ===
+
+* PHPUnit coverage and GitHub Actions CI via moodle-plugin-ci.
+
+=== 0.5.1 ===
+
+* Fixed `js_call_amd` hotfix.
+
+=== 0.5.0 ===
+
+* Added Moodle Privacy API provider (metadata + userlist + plugin provider).
+
+=== Earlier ===
+
+See CHANGELOG.md for 0.1.x – 0.4.x history (initial scaffold, player UI,
+heartbeat-based progress tracking, server-side seek/speed enforcement).

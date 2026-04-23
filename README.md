@@ -103,10 +103,13 @@ Everything below is in the free GPL build — no license key, no upsell wall.
 
 ### Platform hygiene
 - Full **backup & restore** (user data, instance config, bookmarks)
-- **Mobile / Moodle App** support
 - Mustache templates, AMD modules (Rollup-built, ESLint-clean)
 - Site-wide admin defaults for every instance-level setting
 - Internationalisation scaffold (English bundled; all strings externalised)
+
+> **Moodle App (mobile) support** is on the roadmap but is not yet shipped.
+> The activity currently renders correctly in mobile browsers, but a dedicated
+> `db/mobile.php` remote-addons bundle is not included in this release.
 
 ### Quality bar
 - **42 PHPUnit tests / 115 assertions** covering defaults, completion rules,
@@ -210,10 +213,19 @@ GPL-3.0-or-later. See [LICENSE](LICENSE).
 
 ## Commercial support & premium add-ons
 
-The community edition is 100% free and GPL. Paid tiers (Pro / Enterprise) add
-auto-captions, watermarking, signed URLs, interactive questions, heatmap
-analytics, xAPI/LTI, DRM and SLA support. Contact
-`sales@agunfoninteractivity.com` or see [the pricing page](https://agunfoninteractivity.com/modernvideoplayer).
+**The plugin published on the Moodle Plugins Directory is the free community
+edition.** It is 100% GPL-3.0-or-later, fully functional on its own, and does
+**not** require a licence key, paid subscription, phone-home activation, or
+network call to any third-party service. Every feature listed under
+*Features (Free / Community Edition)* above ships enabled out of the box.
+
+Separately, the author offers optional paid tiers (Pro / Enterprise)
+distributed **outside** the Moodle Plugins Directory that add auto-captions,
+watermarking, signed URLs, interactive questions, heatmap analytics,
+xAPI/LTI, DRM and SLA support. These are **not** bundled with this plugin
+and are not required to use it. Contact `sales@agunfoninteractivity.com` or
+see [the pricing page](https://agunfoninteractivity.com/modernvideoplayer)
+if you need them.
 
 ## Credits
 

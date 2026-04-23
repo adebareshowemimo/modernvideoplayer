@@ -73,6 +73,15 @@ class provider implements
             'timecreated' => 'privacy:metadata:modernvideoplayer_segments:timecreated',
         ], 'privacy:metadata:modernvideoplayer_segments');
 
+        $items->add_database_table('modernvideoplayer_bookmarks', [
+            'modernvideoplayerid' => 'privacy:metadata:modernvideoplayer_bookmarks:modernvideoplayerid',
+            'userid' => 'privacy:metadata:modernvideoplayer_bookmarks:userid',
+            'position' => 'privacy:metadata:modernvideoplayer_bookmarks:position',
+            'label' => 'privacy:metadata:modernvideoplayer_bookmarks:label',
+            'timecreated' => 'privacy:metadata:modernvideoplayer_bookmarks:timecreated',
+            'timemodified' => 'privacy:metadata:modernvideoplayer_bookmarks:timemodified',
+        ], 'privacy:metadata:modernvideoplayer_bookmarks');
+
         return $items;
     }
 
@@ -83,15 +92,27 @@ class provider implements
      * @return contextlist
      */
     public static function get_contexts_for_userid(int $userid): contextlist {
-        $sql = "SELECT ctx.id
-                  FROM {modernvideoplayer_progress} p
-                  JOIN {course_modules} cm ON cm.instance = p.modernvideoplayerid
-                  JOIN {modules} m ON m.id = cm.module AND m.name = :modname
-                  JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :contextlevel
-                 WHERE p.userid = :userid";
-
         $contextlist = new contextlist();
-        $contextlist->add_from_sql($sql, [
+
+        $progresssql = "SELECT ctx.id
+                          FROM {modernvideoplayer_progress} p
+                          JOIN {course_modules} cm ON cm.instance = p.modernvideoplayerid
+                          JOIN {modules} m ON m.id = cm.module AND m.name = :modname
+                          JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :contextlevel
+                         WHERE p.userid = :userid";
+        $contextlist->add_from_sql($progresssql, [
+            'modname' => 'modernvideoplayer',
+            'contextlevel' => CONTEXT_MODULE,
+            'userid' => $userid,
+        ]);
+
+        $bookmarksql = "SELECT ctx.id
+                          FROM {modernvideoplayer_bookmarks} b
+                          JOIN {course_modules} cm ON cm.instance = b.modernvideoplayerid
+                          JOIN {modules} m ON m.id = cm.module AND m.name = :modname
+                          JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :contextlevel
+                         WHERE b.userid = :userid";
+        $contextlist->add_from_sql($bookmarksql, [
             'modname' => 'modernvideoplayer',
             'contextlevel' => CONTEXT_MODULE,
             'userid' => $userid,
@@ -112,12 +133,22 @@ class provider implements
             return;
         }
 
-        $sql = "SELECT p.userid
-                  FROM {modernvideoplayer_progress} p
-                  JOIN {course_modules} cm ON cm.instance = p.modernvideoplayerid
-                  JOIN {modules} m ON m.id = cm.module AND m.name = :modname
-                 WHERE cm.id = :cmid";
-        $userlist->add_from_sql('userid', $sql, [
+        $progresssql = "SELECT p.userid
+                          FROM {modernvideoplayer_progress} p
+                          JOIN {course_modules} cm ON cm.instance = p.modernvideoplayerid
+                          JOIN {modules} m ON m.id = cm.module AND m.name = :modname
+                         WHERE cm.id = :cmid";
+        $userlist->add_from_sql('userid', $progresssql, [
+            'modname' => 'modernvideoplayer',
+            'cmid' => $context->instanceid,
+        ]);
+
+        $bookmarksql = "SELECT b.userid
+                          FROM {modernvideoplayer_bookmarks} b
+                          JOIN {course_modules} cm ON cm.instance = b.modernvideoplayerid
+                          JOIN {modules} m ON m.id = cm.module AND m.name = :modname
+                         WHERE cm.id = :cmid";
+        $userlist->add_from_sql('userid', $bookmarksql, [
             'modname' => 'modernvideoplayer',
             'cmid' => $context->instanceid,
         ]);
@@ -192,6 +223,32 @@ class provider implements
             writer::with_context($context)->export_area_files([], 'mod_modernvideoplayer', 'video', 0);
             writer::with_context($context)->export_area_files([], 'mod_modernvideoplayer', 'poster', 0);
         }
+
+        // Export bookmarks for each context (independent of progress rows).
+        $bookmarksql = "SELECT ctx.id AS contextid, b.*
+                          FROM {modernvideoplayer_bookmarks} b
+                          JOIN {course_modules} cm ON cm.instance = b.modernvideoplayerid
+                          JOIN {modules} m ON m.id = cm.module AND m.name = :modname
+                          JOIN {context} ctx ON ctx.instanceid = cm.id AND ctx.contextlevel = :contextlevel
+                         WHERE ctx.id {$insql}
+                           AND b.userid = :userid
+                         ORDER BY ctx.id ASC, b.position ASC";
+        $bookmarks = $DB->get_records_sql($bookmarksql, $params);
+        $grouped = [];
+        foreach ($bookmarks as $bookmark) {
+            $grouped[$bookmark->contextid][] = (object) [
+                'position' => $bookmark->position,
+                'label' => $bookmark->label,
+                'timecreated' => transform::datetime($bookmark->timecreated),
+                'timemodified' => transform::datetime($bookmark->timemodified),
+            ];
+        }
+        foreach ($grouped as $contextid => $items) {
+            $context = \context::instance_by_id($contextid);
+            writer::with_context($context)->export_data(['bookmarks'], (object) [
+                'bookmarks' => $items,
+            ]);
+        }
     }
 
     /**
@@ -218,6 +275,7 @@ class provider implements
             $DB->delete_records_select('modernvideoplayer_segments', "progressid {$insql}", $params);
         }
         $DB->delete_records('modernvideoplayer_progress', ['modernvideoplayerid' => $cm->instance]);
+        $DB->delete_records('modernvideoplayer_bookmarks', ['modernvideoplayerid' => $cm->instance]);
     }
 
     /**
@@ -270,11 +328,14 @@ class provider implements
             'modernvideoplayerid' => $cm->instance,
             'userid' => $userid,
         ]);
-        if (!$progress) {
-            return;
+        if ($progress) {
+            $DB->delete_records('modernvideoplayer_segments', ['progressid' => $progress->id]);
+            $DB->delete_records('modernvideoplayer_progress', ['id' => $progress->id]);
         }
 
-        $DB->delete_records('modernvideoplayer_segments', ['progressid' => $progress->id]);
-        $DB->delete_records('modernvideoplayer_progress', ['id' => $progress->id]);
+        $DB->delete_records('modernvideoplayer_bookmarks', [
+            'modernvideoplayerid' => $cm->instance,
+            'userid' => $userid,
+        ]);
     }
 }

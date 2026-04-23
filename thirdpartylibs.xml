@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<libraries>
+    <!--
+        mod_modernvideoplayer ships no vendored third-party libraries.
+        All runtime code is authored in-house and released under GPL-3.0-or-later.
+        JS dependencies (rollup, eslint, etc.) are build-time only and live in
+        package.json; per Moodle policy they do not require entries here.
+    -->
+</libraries>
