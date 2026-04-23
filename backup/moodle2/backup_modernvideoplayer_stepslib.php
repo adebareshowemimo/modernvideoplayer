@@ -14,13 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Backup steps for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 /**
  * Backup step definitions for mod_modernvideoplayer.
+ * @package mod_modernvideoplayer
  */
 class backup_modernvideoplayer_activity_structure_step extends backup_activity_structure_step {
-
     /**
      * Define the backup structure.
      *
@@ -31,7 +37,8 @@ class backup_modernvideoplayer_activity_structure_step extends backup_activity_s
 
         $modernvideoplayer = new backup_nested_element('modernvideoplayer', ['id'], [
             'name', 'intro', 'introformat', 'videoitemid', 'posteritemid', 'requiredpercent',
-            'completionmode', 'allowresume', 'allowrewind', 'allowfullscreen', 'autoplay', 'allowplaybackspeed',
+            'completionmode', 'allowresume', 'allowrewind', 'allowfullscreen', 'autoplay',
+            'defaultcaptionlang', 'allowplaybackspeed',
             'maxplaybackspeed', 'graceseconds', 'heartbeatinterval', 'forceservervalidation',
             'strictendvalidation', 'showsuspiciousflags', 'timecreated', 'timemodified',
         ]);
@@ -65,6 +72,8 @@ class backup_modernvideoplayer_activity_structure_step extends backup_activity_s
         $modernvideoplayer->annotate_files('mod_modernvideoplayer', 'intro', null);
         $modernvideoplayer->annotate_files('mod_modernvideoplayer', 'video', null);
         $modernvideoplayer->annotate_files('mod_modernvideoplayer', 'poster', null);
+        $modernvideoplayer->annotate_files('mod_modernvideoplayer', 'captions', null);
+        $modernvideoplayer->annotate_files('mod_modernvideoplayer', 'chapters', null);
 
         return $this->prepare_activity_structure($modernvideoplayer);
     }

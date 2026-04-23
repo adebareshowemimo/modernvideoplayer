@@ -14,17 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Server-side playback validation for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\local;
 
 use stdClass;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Playback validation logic.
+ * @package mod_modernvideoplayer
  */
 class validation {
-
     /**
      * Validate a heartbeat payload against the current progress state.
      *
@@ -61,7 +66,12 @@ class validation {
             $suspicious = true;
             $integrityfailure = true;
         }
-        if ($currenttime > $allowedposition && $currenttime > $lastposition + (float) $instance->heartbeatinterval + (float) $instance->graceseconds) {
+        if (
+            $currenttime > $allowedposition
+            && $currenttime > $lastposition
+                + (float) $instance->heartbeatinterval
+                + (float) $instance->graceseconds
+        ) {
             $suspicious = true;
             $integrityfailure = true;
             $currenttime = min($allowedposition, max($lastposition, 0));

@@ -14,20 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Course module viewed event.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\event;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Activity viewed event.
  */
 class course_module_viewed extends \core\event\course_module_viewed {
+    /**
+     * Initialise the event.
+     */
     protected function init() {
         $this->data['objecttable'] = 'modernvideoplayer';
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
+    /**
+     * Backup / restore object id mapping.
+     *
+     * @return array
+     */
     public static function get_objectid_mapping() {
         return ['db' => 'modernvideoplayer', 'restore' => 'modernvideoplayer'];
     }

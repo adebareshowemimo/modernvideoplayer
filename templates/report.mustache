@@ -1,5 +1,32 @@
 {{!
     @template mod_modernvideoplayer/report
+
+    Reporting dashboard for a single mod_modernvideoplayer instance.
+
+    Context variables required for this template:
+    * id - course module id (int)
+    * filterurl - non-empty form action URL (string)
+    * totallearners, completedlearners, completionrate, averagecoverage,
+      suspiciousflags, integrityfailures - aggregate KPIs (string|int)
+    * search, filter - current filter values (string)
+    * downloadurl - URL of the CSV export (string)
+    * rows - array of learner rows (array)
+
+    Example context (json):
+    {
+        "id": 42,
+        "filterurl": "/mod/modernvideoplayer/view.php",
+        "totallearners": 25,
+        "completedlearners": 17,
+        "completionrate": "68%",
+        "averagecoverage": "72%",
+        "suspiciousflags": 2,
+        "integrityfailures": 0,
+        "search": "",
+        "filter": "all",
+        "downloadurl": "/mod/modernvideoplayer/view.php?id=42&download=csv",
+        "rows": []
+    }
 }}
 <div class="row g-3 mb-4">
     <div class="col-md-4 col-xl-2"><div class="card h-100"><div class="card-body"><div class="small text-muted">{{#str}}reporttotallearners, modernvideoplayer{{/str}}</div><div class="h4 mb-0">{{totallearners}}</div></div></div></div>

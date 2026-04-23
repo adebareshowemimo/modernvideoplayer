@@ -14,19 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Completion management for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\local;
 
 use completion_info;
 use context_module;
 use stdClass;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Module completion coordinator.
+ * @package mod_modernvideoplayer
  */
 class completion_manager {
-
     /**
      * Recalculate and apply completion state.
      *
@@ -54,7 +59,7 @@ class completion_manager {
             ]);
             $event->trigger();
 
-            // Only grant completion — never revoke it via a learner action.
+            // Only grant completion â€” never revoke it via a learner action.
             // Completion is sticky: a teacher must use Moodle's standard
             // "Reset user completion data" tool to remove it.
             $completion = new completion_info($course);

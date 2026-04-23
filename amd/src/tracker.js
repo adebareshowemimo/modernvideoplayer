@@ -56,10 +56,12 @@ export const start = (config, video, state, onUpdate) => {
             state.completed = response.completed;
             state.sessiontoken = response.sessiontoken;
             onUpdate(response);
+            return undefined;
         }).catch(() => {
             window.console.warn(config.strings.progressunavailable);
         }).then(() => {
             inflight = false;
+            return undefined;
         });
     };
 
@@ -114,6 +116,7 @@ export const start = (config, video, state, onUpdate) => {
             state.completed = response.completed;
             state.percentcomplete = response.percentcomplete;
             onUpdate(response);
+            return undefined;
         }).catch(() => {
             window.console.warn(config.strings.progressunavailable);
         });
