@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Perform plugin upgrade.
  *
@@ -127,6 +125,17 @@ function xmldb_modernvideoplayer_upgrade(int $oldversion): bool {
         }
 
         upgrade_mod_savepoint(true, 2026042007, 'modernvideoplayer');
+    }
+
+    if ($oldversion < 2026042008) {
+        $table = new xmldb_table('modernvideoplayer');
+        $field = new xmldb_field('defaultcaptionlang', XMLDB_TYPE_CHAR, '8', null, XMLDB_NOTNULL, null, 'en', 'autoplay');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2026042008, 'modernvideoplayer');
     }
 
     return true;

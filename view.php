@@ -101,6 +101,14 @@ $playercontext = [
         : '',
 ];
 
+$defaultcaptionlang = (string) ($instance->defaultcaptionlang ?? 'en');
+if (!preg_match('/^[a-zA-Z]{2,3}(-[a-zA-Z]{2,4})?$/', $defaultcaptionlang)) {
+    $defaultcaptionlang = 'en';
+}
+$captiontracks = modernvideoplayer_get_caption_tracks($context, $defaultcaptionlang);
+$playercontext['hascaptions'] = !empty($captiontracks);
+$playercontext['captions'] = $captiontracks;
+
 $autoplaymode = (string) ($instance->autoplay ?? 'unmuted');
 if (!in_array($autoplaymode, ['off', 'muted', 'unmuted'], true)) {
     $autoplaymode = 'unmuted';
@@ -109,6 +117,8 @@ if (!in_array($autoplaymode, ['off', 'muted', 'unmuted'], true)) {
 $jsconfig = [
     'cmid' => $cm->id,
     'autoplay' => $autoplaymode,
+    'hascaptions' => !empty($captiontracks),
+    'defaultcaptionlang' => $defaultcaptionlang,
     'strings' => [
         'seekblocked' => get_string('seekblocked', 'modernvideoplayer'),
         'speedrestricted' => get_string('speedrestricted', 'modernvideoplayer'),
@@ -122,6 +132,14 @@ $jsconfig = [
         'startfrombeginning' => get_string('startfrombeginning', 'modernvideoplayer'),
         'resumepromptheading' => get_string('resumepromptheading', 'modernvideoplayer'),
         'resumepromptbody' => get_string('resumepromptbody', 'modernvideoplayer'),
+        'captionsoff' => get_string('captionsoff', 'modernvideoplayer'),
+        'captionson' => get_string('captionson', 'modernvideoplayer', '__LABEL__'),
+        'togglecaptions' => get_string('togglecaptions', 'modernvideoplayer'),
+        'toggletranscript' => get_string('toggletranscript', 'modernvideoplayer'),
+        'transcript' => get_string('transcript', 'modernvideoplayer'),
+        'transcriptloading' => get_string('transcriptloading', 'modernvideoplayer'),
+        'transcriptunavailable' => get_string('transcriptunavailable', 'modernvideoplayer'),
+        'transcriptjumpto' => get_string('transcriptjumpto', 'modernvideoplayer', '__TIME__'),
     ],
 ];
 

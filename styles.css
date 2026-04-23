@@ -36,6 +36,7 @@
 
 .modernvideoplayer__title {
     margin: 0;
+    /* stylelint-disable-next-line csstree/validator */
     font-size: clamp(1rem, 0.7rem + 1vw, 1.4rem);
     font-weight: 700;
     color: #0f172a;
@@ -69,6 +70,7 @@
     background: #07111c;
     border-radius: 1.25rem;
     overflow: hidden;
+    /* stylelint-disable-next-line csstree/validator */
     min-height: min(70vh, 42rem);
 }
 
@@ -96,6 +98,7 @@
 
 .modernvideoplayer-status__headline {
     color: #eaf1ff;
+    /* stylelint-disable-next-line csstree/validator */
     font-size: clamp(0.95rem, 0.82rem + 0.4vw, 1.1rem);
     font-weight: 600;
     line-height: 1;
@@ -226,9 +229,16 @@
 
 .modernvideoplayer-controls--icononly .modernvideoplayer-controls__button {
     min-width: 2.25rem;
+    /* stylelint-disable declaration-no-important -- override Bootstrap utility classes. */
     padding-left: 0.7rem !important;
     padding-right: 0.7rem !important;
+    /* stylelint-enable declaration-no-important */
 }
+
+/* The focus-mode rules below intentionally use !important to override Boost theme defaults
+   on a per-instance basis without modifying core CSS. The long selectors target deeply-nested
+   Boost markup. Stylelint disabled for this targeted block only. */
+/* stylelint-disable declaration-no-important, max-line-length */
 
 /* Neutralise the extra left offset Boost adds to #page when drawers are present. */
 .modernvideoplayer-focus-mode #page.drawers {
@@ -289,8 +299,7 @@
 .modernvideoplayer-focus-mode.modernvideoplayer-hide-primarynav.modernvideoplayer-hide-secondarynav #page-wrapper #page {
     padding-top: 0 !important;
 }
-
-
+/* stylelint-enable declaration-no-important, max-line-length */
 
 .modernvideoplayer-focus-mode #region-main {
     padding-top: 1rem;
@@ -356,4 +365,48 @@
 
 .content.activityiconcontainer.icon-size-6.modicon_modernvideoplayer {
     margin-right: 10px;
+}
+/* ---------- Captions & transcript ---------- */
+.modernvideoplayer-controls__button--active {
+    background: rgba(59, 130, 246, 0.18);
+    color: #1d4ed8;
+}
+.modernvideoplayer-transcript {
+    max-height: 18rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.modernvideoplayer-transcript__body {
+    overflow-y: auto;
+    max-height: 15rem;
+}
+.modernvideoplayer-transcript__cue {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+.modernvideoplayer-transcript__cue:last-child {
+    border-bottom: 0;
+}
+.modernvideoplayer-transcript__button {
+    text-decoration: none;
+    color: inherit;
+    border-radius: 0.5rem;
+    transition: background-color 120ms ease;
+}
+.modernvideoplayer-transcript__button:hover,
+.modernvideoplayer-transcript__button:focus-visible {
+    background: rgba(59, 130, 246, 0.08);
+    text-decoration: none;
+}
+.modernvideoplayer-transcript__cue--active .modernvideoplayer-transcript__button {
+    background: rgba(59, 130, 246, 0.18);
+    color: #1d4ed8;
+    font-weight: 600;
+}
+.modernvideoplayer-transcript__time {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85em;
+}
+.modernvideoplayer-transcript__text {
+    white-space: pre-wrap;
 }

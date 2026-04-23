@@ -19,6 +19,7 @@
         <FIELD NAME="allowrewind" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="allowfullscreen" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="autoplay" TYPE="char" LENGTH="16" NOTNULL="true" DEFAULT="unmuted" SEQUENCE="false"/>
+        <FIELD NAME="defaultcaptionlang" TYPE="char" LENGTH="8" NOTNULL="true" DEFAULT="en" SEQUENCE="false"/>
         <FIELD NAME="showprimarynav" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="showsecondarynav" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="showcourseindex" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

@@ -14,26 +14,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Suspicious seek detected event.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\event;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Suspicious seek event.
  */
 class suspicious_seek_detected extends \core\event\base {
+    /**
+     * Initialise the event.
+     */
     protected function init() {
         $this->data['objecttable'] = 'modernvideoplayer';
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
+    /**
+     * Localised event name.
+     *
+     * @return string
+     */
     public static function get_name() {
         return get_string('eventsuspiciousseekdetected', 'modernvideoplayer');
     }
 
+    /**
+     * Plain-text event description.
+     *
+     * @return string
+     */
     public function get_description() {
-        return "The system detected suspicious playback behaviour for user '{$this->relateduserid}' on ".
+        return "The system detected suspicious playback behaviour for user '{$this->relateduserid}' on " .
             "modern video player activity '{$this->objectid}'.";
     }
 }

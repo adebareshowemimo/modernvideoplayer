@@ -14,15 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Playback session management for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\local;
 
 use context_module;
 use stdClass;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Facade around playback tracking and completion logic.
+ * @package mod_modernvideoplayer
  */
 class playback_manager {
     /** @var progress_repository */

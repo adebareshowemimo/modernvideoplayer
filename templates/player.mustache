@@ -1,5 +1,35 @@
 {{!
     @template mod_modernvideoplayer/player
+
+    Main player surface for a mod_modernvideoplayer activity.
+
+    Context variables required for this template:
+    * cmid - course module id (int)
+    * name - activity name (string)
+    * intro - rendered intro HTML (string)
+    * videourl, posterurl - media URLs (string)
+    * focusmode, showtitle, titleleft, titlecenter, titleright - layout flags (bool)
+    * backurl, backlabel - close button target (string)
+    * hascaptions, captions, defaultcaptionlang - captions metadata (bool|array|string)
+
+    Example context (json):
+    {
+        "cmid": 42,
+        "name": "Lecture 1",
+        "intro": "",
+        "videourl": "https://example.test/lecture1.mp4",
+        "posterurl": "",
+        "focusmode": false,
+        "showtitle": true,
+        "titleleft": true,
+        "titlecenter": false,
+        "titleright": false,
+        "backurl": "#",
+        "backlabel": "Back",
+        "hascaptions": false,
+        "captions": [],
+        "defaultcaptionlang": "en"
+    }
 }}
 <div class="modernvideoplayer" data-region="modern-video-player" data-cmid="{{cmid}}">
     {{#focusmode}}
@@ -31,6 +61,9 @@
                 {{#hasvideo}}
                     <source src="{{videourl}}">
                 {{/hasvideo}}
+                {{#captions}}
+                    <track kind="subtitles" src="{{src}}" srclang="{{srclang}}" label="{{label}}"{{#default}} default{{/default}}>
+                {{/captions}}
             </video>
                 <div
                     class="position-absolute top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center p-3"
@@ -50,6 +83,18 @@
             </div>
         </div>
     </div>
+    {{#hascaptions}}
+        <div class="modernvideoplayer-transcript card mt-3 d-none" data-region="transcript-panel" aria-label="{{#str}}transcript, modernvideoplayer{{/str}}">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h2 class="h6 mb-0">{{#str}}transcript, modernvideoplayer{{/str}}</h2>
+                <button type="button" class="btn-close" data-action="close-transcript" aria-label="{{#str}}toggletranscript, modernvideoplayer{{/str}}"></button>
+            </div>
+            <div class="card-body modernvideoplayer-transcript__body" data-region="transcript-body" tabindex="0">
+                <p class="text-muted mb-0" data-region="transcript-empty">{{#str}}transcriptloading, modernvideoplayer{{/str}}</p>
+                <ol class="list-unstyled mb-0 d-none" data-region="transcript-list"></ol>
+            </div>
+        </div>
+    {{/hascaptions}}
     {{#focusmode}}
             </div>
         </div>

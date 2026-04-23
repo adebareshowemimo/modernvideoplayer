@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Privacy provider for mod_modernvideoplayer.
+ *
+ * @package    mod_modernvideoplayer
+ * @copyright  2026 Adebare Showemimo <adebareshowemimo@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace mod_modernvideoplayer\privacy;
 
 use core_privacy\local\metadata\collection;
@@ -24,17 +32,13 @@ use core_privacy\local\request\helper;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy provider for mod_modernvideoplayer.
  */
 class provider implements
     \core_privacy\local\metadata\provider,
-    \core_privacy\local\request\plugin\provider,
-    \core_privacy\local\request\core_userlist_provider {
-
+    \core_privacy\local\request\core_userlist_provider,
+    \core_privacy\local\request\plugin\provider {
     /**
      * Describe stored data.
      *
@@ -133,7 +137,7 @@ class provider implements
         }
 
         $user = $contextlist->get_user();
-        list($insql, $params) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$insql, $params] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
         $sql = "SELECT ctx.id AS contextid, p.*
                   FROM {modernvideoplayer_progress} p
                   JOIN {course_modules} cm ON cm.instance = p.modernvideoplayerid
@@ -173,7 +177,7 @@ class provider implements
             $segments = $DB->get_records('modernvideoplayer_segments', ['progressid' => $record->id], 'segmentstart ASC');
             if ($segments) {
                 writer::with_context($context)->export_data(['segments'], (object) [
-                    'segments' => array_map(function($segment) {
+                    'segments' => array_map(function ($segment) {
                         return (object) [
                             'segmentstart' => $segment->segmentstart,
                             'segmentend' => $segment->segmentend,
@@ -210,7 +214,7 @@ class provider implements
 
         $progressids = $DB->get_fieldset_select('modernvideoplayer_progress', 'id', 'modernvideoplayerid = ?', [$cm->instance]);
         if ($progressids) {
-            list($insql, $params) = $DB->get_in_or_equal($progressids, SQL_PARAMS_NAMED);
+            [$insql, $params] = $DB->get_in_or_equal($progressids, SQL_PARAMS_NAMED);
             $DB->delete_records_select('modernvideoplayer_segments', "progressid {$insql}", $params);
         }
         $DB->delete_records('modernvideoplayer_progress', ['modernvideoplayerid' => $cm->instance]);

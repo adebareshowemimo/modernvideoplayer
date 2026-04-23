@@ -7,8 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Captions (WebVTT)**: upload multiple `.vtt` files per activity. Language
+  is auto-detected from filename suffix (e.g. `lecture.en.vtt`, `lecture.fr.vtt`,
+  `lecture.es-MX.vtt`); unrecognised files fall back to the configured
+  **Default caption language** (per-activity, with site-wide default).
+- **CC button** in the player controls cycles through available caption tracks
+  (off → each track → off).
+- **Transcript panel**: the default-language caption track is rendered as a
+  clickable cue list below the player. Clicking a cue seeks the video to that
+  point; the active cue is highlighted and scrolled into view as playback
+  progresses.
+- New admin setting `modernvideoplayer/defaultcaptionlang` (BCP-47, default `en`).
+- Captions files are included in activity backup / restore.
+
 ### Planned
-- Captions (VTT) upload + CC button + transcript panel
 - Chapters / timeline markers
 - Learner-facing playback speed UI (0.5×–2×)
 - Keyboard shortcuts + help modal
