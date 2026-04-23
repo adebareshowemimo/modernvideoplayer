@@ -85,6 +85,10 @@ function modernvideoplayer_get_defaults(): array {
         'titleposition' => isset($config->defaulttitleposition) ? (string) $config->defaulttitleposition : 'left',
         'showcontroltext' => isset($config->defaultshowcontroltext) ? (int) $config->defaultshowcontroltext : 1,
         'showsuspiciousflags' => isset($config->defaultsuspiciouslogging) ? (int) $config->defaultsuspiciouslogging : 1,
+        'enforcefocus' => isset($config->defaultenforcefocus) ? (int) $config->defaultenforcefocus : 0,
+        'allowpip' => isset($config->defaultallowpip) ? (int) $config->defaultallowpip : 1,
+        'allowtranscriptdownload' => isset($config->defaultallowtranscriptdownload)
+            ? (int) $config->defaultallowtranscriptdownload : 1,
     ];
 }
 

@@ -80,6 +80,10 @@ if (!in_array($titleposition, $validtitlepositions, true)) {
     $titleposition = 'left';
 }
 
+$enforcefocus = !empty($instance->enforcefocus);
+$allowpip = !$enforcefocus && !empty($instance->allowpip);
+$allowtranscriptdownload = !empty($instance->allowtranscriptdownload);
+
 $playercontext = [
     'cmid' => $cm->id,
     'name' => format_string($instance->name),
@@ -94,6 +98,9 @@ $playercontext = [
     'titlecenter' => $titleposition === 'center',
     'titleright' => $titleposition === 'right',
     'focusmode' => $focusmode,
+    'enforcefocus' => $enforcefocus,
+    'allowpip' => $allowpip,
+    'allowtranscriptdownload' => $allowtranscriptdownload,
     'backurl' => $backurl->out(false),
     'backlabel' => get_string('back'),
     'reporturl' => !$focusmode && has_capability('mod/modernvideoplayer:viewreports', $context)
@@ -126,6 +133,11 @@ $jsconfig = [
     'hascaptions' => !empty($captiontracks),
     'haschapters' => $chaptertrack !== null,
     'defaultcaptionlang' => $defaultcaptionlang,
+    'enforcefocus' => $enforcefocus,
+    'allowpip' => $allowpip,
+    'allowtranscriptdownload' => $allowtranscriptdownload,
+    'transcriptfilename' => clean_filename(format_string($instance->name)) . '-'
+        . get_string('transcriptdownloadfilename', 'modernvideoplayer') . '.txt',
     'strings' => [
         'seekblocked' => get_string('seekblocked', 'modernvideoplayer'),
         'speedrestricted' => get_string('speedrestricted', 'modernvideoplayer'),
@@ -155,6 +167,10 @@ $jsconfig = [
         'playbackspeed' => get_string('playbackspeed', 'modernvideoplayer'),
         'speednormal' => get_string('speednormal', 'modernvideoplayer'),
         'shortcutshelp' => get_string('shortcutshelp', 'modernvideoplayer'),
+        'pip' => get_string('pip', 'modernvideoplayer'),
+        'pipdisabled' => get_string('pipdisabled', 'modernvideoplayer'),
+        'transcriptdownload' => get_string('transcriptdownload', 'modernvideoplayer'),
+        'focuspausedhidden' => get_string('focuspausedhidden', 'modernvideoplayer'),
     ],
 ];
 

@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026042016;
+$plugin->version = 2026042017;
 $plugin->requires = 2025041400;
 $plugin->component = 'mod_modernvideoplayer';
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release = '0.9.0';
+$plugin->release = '0.10.0';
 $plugin->cron = 0;

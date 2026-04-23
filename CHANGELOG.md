@@ -8,8 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Picture-in-Picture + transcript download
 - Behat acceptance tests
+
+## [0.10.0] - 2026-04-23
+
+### Added
+- **Focus Mode enforcement** (`enforcefocus` instance setting + `defaultenforcefocus` admin default).
+  When enabled it disables Picture-in-Picture, suppresses seek keyboard shortcuts
+  (arrows, `J`/`L`, `<`/`>`, digit keys), and auto-pauses playback when the browser
+  tab is hidden.
+- **Picture-in-Picture toggle button** (`allowpip` instance setting, on by default,
+  auto-disabled whenever Focus Mode is on). Controls button is rendered only when
+  the browser supports PiP and the instance allows it.
+- **Transcript download button** (`allowtranscriptdownload` instance setting,
+  on by default). Rendered next to the transcript panel close button when captions
+  exist; downloads a timestamped `.txt` transcript.
+- 3 new DB columns via `db/upgrade.php` savepoint `2026042017`.
+- PHPUnit `focus_mode_test.php` (3 tests) covering instance defaults, overrides,
+  and the `modernvideoplayer_get_defaults()` admin-default fallbacks.
+- New AMD logic: `enforcer.js::enforceFocus()`, `shortcuts.js` seek-key gate,
+  `player.js` PiP + transcript-download wiring.
+
+### Changed
+- Total PHPUnit suite is now 42 tests / 115 assertions.
 
 ## [0.9.0] - 2026-04-23
 

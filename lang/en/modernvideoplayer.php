@@ -25,8 +25,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['allowfullscreen'] = 'Allow fullscreen';
+$string['allowpip'] = 'Allow Picture-in-Picture';
+$string['allowpip_help'] = 'When enabled, learners can pop the video out into a floating Picture-in-Picture window. Disabled automatically when Focus mode is on so the learner cannot detach the video from the course page.';
 $string['allowplaybackspeed'] = 'Allow playback speed control';
 $string['allowrewind'] = 'Allow rewind';
+$string['allowtranscriptdownload'] = 'Allow transcript download';
+$string['allowtranscriptdownload_help'] = 'When enabled, learners see a **Download** button inside the transcript panel that saves the caption cues as a plain-text file. Only available when at least one caption track is uploaded.';
 $string['autoplay'] = 'Autoplay';
 $string['autoplay_help'] = 'Controls whether the video starts playing automatically when the page loads.
 
@@ -99,6 +103,14 @@ $string['downloadcsv'] = 'Download CSV';
 $string['downloadreportfilename'] = 'modern-video-player-report';
 $string['duration'] = 'Duration';
 $string['email'] = 'Email';
+$string['enforcefocus'] = 'Enforce focus on the video';
+$string['enforcefocus_help'] = 'When enabled, the plugin actively prevents the learner from escaping the video:
+
+* Picture-in-Picture is blocked (browser and plugin button).
+* Keyboard shortcuts that skip or scrub the video (J/L, arrow keys, 0-9, < >) are ignored.
+* When the browser tab is hidden the video is paused automatically.
+
+Play/pause, fullscreen, captions, chapters and the shortcuts-help dialog still work so the learner retains accessibility controls.';
 $string['enforcementsettings'] = 'Enforcement settings';
 $string['eventcompletionachieved'] = 'Playback completion achieved';
 $string['eventplayerviewed'] = 'Modern video player viewed';
@@ -112,6 +124,7 @@ $string['filterincomplete'] = 'Incomplete only';
 $string['filtersearch'] = 'Search learners';
 $string['filtersuspiciousonly'] = 'Suspicious activity only';
 $string['focusmodesettings'] = 'Navigation & Drawers Settings';
+$string['focuspausedhidden'] = 'Playback paused because the tab was hidden.';
 $string['forceservervalidation'] = 'Force server-side validation';
 $string['fullname'] = 'Learner';
 $string['fullscreen'] = 'Fullscreen';
@@ -140,13 +153,14 @@ $string['noentries'] = 'No learner progress has been recorded yet.';
 $string['novideo'] = 'No video file has been uploaded for this activity yet.';
 $string['pause'] = 'Pause';
 $string['percentcomplete'] = 'Percent complete';
+$string['pip'] = 'Picture-in-Picture';
+$string['pipdisabled'] = 'Picture-in-Picture is disabled for this activity.';
 $string['play'] = 'Play';
 $string['playbacksettings'] = 'Playback settings';
 $string['playbackspeed'] = 'Playback speed';
 $string['playerlabel'] = 'Video player';
 $string['pluginadministration'] = 'Modern video player administration';
 $string['pluginname'] = 'Modern video player';
-
 $string['posterimage'] = 'Poster image';
 $string['privacy:metadata'] = 'The Modern video player plugin stores learner playback progress.';
 $string['privacy:metadata:modernvideoplayer_progress'] = 'Stores validated playback progress for a learner in a modern video player activity.';
@@ -236,6 +250,9 @@ $string['togglechapters'] = 'Toggle chapters';
 $string['toggletranscript'] = 'Toggle transcript';
 $string['totalsecondswatched'] = 'Total watched seconds';
 $string['transcript'] = 'Transcript';
+$string['transcriptdownload'] = 'Download transcript';
+$string['transcriptdownloadfilename'] = 'transcript';
+
 $string['transcriptjumpto'] = 'Jump to {$a} in the video';
 $string['transcriptloading'] = 'Loading transcript…';
 $string['transcriptunavailable'] = 'No transcript is available for this video.';

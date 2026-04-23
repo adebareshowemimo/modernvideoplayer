@@ -157,6 +157,18 @@ export const init = (root, video, state, config) => {
         // one player per page) AND nothing else claims arrow/space input.
         const key = ev.key;
 
+        const enforceFocus = !!config.enforcefocus;
+        // Keys that move the playhead or change speed. When focus enforcement
+        // is on, these are ignored so the learner can't skip content.
+        const seekKeys = new Set([
+            'ArrowLeft', 'ArrowRight', 'j', 'J', 'l', 'L',
+            '<', ',', '>', '.',
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        ]);
+        if (enforceFocus && seekKeys.has(key)) {
+            return;
+        }
+
         // Close help modal first on Escape.
         if (key === 'Escape' && helpDialog && !helpDialog.classList.contains('d-none')) {
             ev.preventDefault();

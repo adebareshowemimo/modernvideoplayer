@@ -125,6 +125,17 @@ class mod_modernvideoplayer_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'showsuspiciousflags', get_string('showsuspiciousflags', 'modernvideoplayer'));
         $mform->setDefault('showsuspiciousflags', $defaults['showsuspiciousflags']);
 
+        $mform->addElement('advcheckbox', 'enforcefocus', get_string('enforcefocus', 'modernvideoplayer'));
+        $mform->setDefault('enforcefocus', $defaults['enforcefocus']);
+        $mform->addHelpButton('enforcefocus', 'enforcefocus', 'modernvideoplayer');
+        $mform->addElement('advcheckbox', 'allowpip', get_string('allowpip', 'modernvideoplayer'));
+        $mform->setDefault('allowpip', $defaults['allowpip']);
+        $mform->addHelpButton('allowpip', 'allowpip', 'modernvideoplayer');
+        $mform->disabledIf('allowpip', 'enforcefocus', 'checked');
+        $mform->addElement('advcheckbox', 'allowtranscriptdownload', get_string('allowtranscriptdownload', 'modernvideoplayer'));
+        $mform->setDefault('allowtranscriptdownload', $defaults['allowtranscriptdownload']);
+        $mform->addHelpButton('allowtranscriptdownload', 'allowtranscriptdownload', 'modernvideoplayer');
+
         $mform->addElement('header', 'focusmodesettings', get_string('focusmodesettings', 'modernvideoplayer'));
         $mform->addElement('advcheckbox', 'showprimarynav', get_string('showprimarynav', 'modernvideoplayer'));
         $mform->setDefault('showprimarynav', $defaults['showprimarynav']);

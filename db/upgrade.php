@@ -204,5 +204,22 @@ function xmldb_modernvideoplayer_upgrade(int $oldversion): bool {
         upgrade_mod_savepoint(true, 2026042016, 'modernvideoplayer');
     }
 
+    if ($oldversion < 2026042017) {
+        // Focus mode enforcement + PiP + transcript download toggles.
+        $table = new xmldb_table('modernvideoplayer');
+        $fields = [
+            new xmldb_field('enforcefocus', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'grade'),
+            new xmldb_field('allowpip', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '1', 'enforcefocus'),
+            new xmldb_field('allowtranscriptdownload', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '1', 'allowpip'),
+        ];
+        foreach ($fields as $field) {
+            if (!$dbman->field_exists($table, $field)) {
+                $dbman->add_field($table, $field);
+            }
+        }
+
+        upgrade_mod_savepoint(true, 2026042017, 'modernvideoplayer');
+    }
+
     return true;
 }

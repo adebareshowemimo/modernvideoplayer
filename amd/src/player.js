@@ -160,7 +160,66 @@ export const init = (cmid) => {
         SpeedMenu.init(root, video, state, config.strings);
         Shortcuts.init(root, video, state, config);
 
-        Enforcer.init(video, state, config.strings);
+        Enforcer.init(video, state, config.strings, config);
+
+        const pipButton = root.querySelector('[data-action="toggle-pip"]');
+        if (pipButton) {
+            const pipSupported = !!(document.pictureInPictureEnabled && !video.disablePictureInPicture);
+            if (config.allowpip && pipSupported) {
+                pipButton.classList.remove('d-none');
+                pipButton.addEventListener('click', () => {
+                    if (document.pictureInPictureElement === video) {
+                        document.exitPictureInPicture?.().catch(() => null);
+                    } else {
+                        video.requestPictureInPicture?.().catch(() => null);
+                    }
+                });
+                video.addEventListener('enterpictureinpicture', () => {
+                    pipButton.setAttribute('aria-pressed', 'true');
+                });
+                video.addEventListener('leavepictureinpicture', () => {
+                    pipButton.setAttribute('aria-pressed', 'false');
+                });
+            } else {
+                pipButton.classList.add('d-none');
+            }
+        }
+
+        const downloadButton = root.querySelector('[data-action="download-transcript"]');
+        if (downloadButton && config.allowtranscriptdownload && config.hascaptions) {
+            downloadButton.classList.remove('d-none');
+            downloadButton.addEventListener('click', () => {
+                const items = root.querySelectorAll('[data-region="transcript-list"] li');
+                if (!items.length) {
+                    return;
+                }
+                const formatSeconds = (raw) => {
+                    const total = Math.max(0, Math.floor(Number(raw) || 0));
+                    const hh = Math.floor(total / 3600);
+                    const mm = Math.floor((total % 3600) / 60);
+                    const ss = total % 60;
+                    const pad = (n) => String(n).padStart(2, '0');
+                    return hh > 0 ? `${hh}:${pad(mm)}:${pad(ss)}` : `${pad(mm)}:${pad(ss)}`;
+                };
+                const lines = [];
+                items.forEach((li) => {
+                    const start = li.getAttribute('data-start');
+                    const text = (li.textContent || '').replace(/\s+/g, ' ').trim();
+                    if (text.length) {
+                        lines.push(start !== null ? '[' + formatSeconds(start) + '] ' + text : text);
+                    }
+                });
+                const blob = new Blob([lines.join('\n') + '\n'], {type: 'text/plain;charset=utf-8'});
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = config.transcriptfilename || 'transcript.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.setTimeout(() => URL.revokeObjectURL(url), 500);
+            });
+        }
 
         const onUpdate = (response) => {
             state.allowedposition = response.allowedposition;

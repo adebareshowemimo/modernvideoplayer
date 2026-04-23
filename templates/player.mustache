@@ -94,7 +94,10 @@
         <div class="modernvideoplayer-transcript card mt-3 d-none" data-region="transcript-panel" aria-label="{{#str}}transcript, modernvideoplayer{{/str}}">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h2 class="h6 mb-0">{{#str}}transcript, modernvideoplayer{{/str}}</h2>
-                <button type="button" class="btn-close" data-action="close-transcript" aria-label="{{#str}}toggletranscript, modernvideoplayer{{/str}}"></button>
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary d-none" data-action="download-transcript">{{#str}}transcriptdownload, modernvideoplayer{{/str}}</button>
+                    <button type="button" class="btn-close" data-action="close-transcript" aria-label="{{#str}}toggletranscript, modernvideoplayer{{/str}}"></button>
+                </div>
             </div>
             <div class="card-body modernvideoplayer-transcript__body" data-region="transcript-body" tabindex="0">
                 <p class="text-muted mb-0" data-region="transcript-empty">{{#str}}transcriptloading, modernvideoplayer{{/str}}</p>
